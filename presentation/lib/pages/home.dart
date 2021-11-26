@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:presentation/pages/map.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key, required this.title}) : super(key: key);
@@ -11,7 +11,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  late GoogleMapController mapController;
 
   @override
   Widget build(BuildContext context) {
@@ -37,25 +36,11 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildPages() {
-    return TabBarView(
+    return const TabBarView(
       children: [
-        const Icon(Icons.photo_album),
-        _buildGoogleMap(),
+        Icon(Icons.photo_album),
+        MapPage(),
       ],
     );
-  }
-
-  Widget _buildGoogleMap() {
-    return GoogleMap(
-      onMapCreated: _onMapCreated,
-      initialCameraPosition: const CameraPosition(
-        target: LatLng(45.521563, -122.677433),
-        zoom: 11.0,
-      ),
-    );
-  }
-
-  void _onMapCreated(GoogleMapController controller) {
-    mapController = controller;
   }
 }
