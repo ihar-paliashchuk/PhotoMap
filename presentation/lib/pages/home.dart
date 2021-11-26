@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:presentation/pages/gallery/gallery.dart';
 import 'package:presentation/pages/map.dart';
 
 class HomePage extends StatefulWidget {
@@ -11,7 +12,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -38,7 +38,7 @@ class _HomePageState extends State<HomePage> {
   Widget _buildPages() {
     return const TabBarView(
       children: [
-        Icon(Icons.photo_album),
+        GalleryPage(),
         MapPage(),
       ],
     );
