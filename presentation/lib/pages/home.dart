@@ -11,16 +11,37 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
   late GoogleMapController mapController;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(widget.title),
+          bottom: _buildTabs(),
+        ),
+        body: _buildPages(),
       ),
-      body: _buildGoogleMap(),
+    );
+  }
+
+  PreferredSizeWidget _buildTabs() {
+    return const TabBar(
+      tabs: [
+        Tab(icon: Icon(Icons.photo_album)),
+        Tab(icon: Icon(Icons.map)),
+      ],
+    );
+  }
+
+  Widget _buildPages() {
+    return TabBarView(
+      children: [
+        const Icon(Icons.photo_album),
+        _buildGoogleMap(),
+      ],
     );
   }
 
@@ -37,5 +58,4 @@ class _HomePageState extends State<HomePage> {
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
   }
-
 }
