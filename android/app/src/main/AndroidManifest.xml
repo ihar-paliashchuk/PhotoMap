@@ -1,12 +1,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.photo_map">
 
-    <meta-data android:name="com.google.android.geo.API_KEY"
-        android:value="AIzaSyCuq9k5poTbDVfJ959W5vkiGLvZ5juLml4"/> //TODO move key to build config
-
    <application
         android:label="photo_map"
         android:icon="@mipmap/ic_launcher">
+
+        <meta-data android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCuq9k5poTbDVfJ959W5vkiGLvZ5juLml4"/> //TODO move key to build config
+
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
