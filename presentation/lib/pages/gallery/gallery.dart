@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:presentation/pages/add_photo.dart';
 
 class GalleryPage extends StatefulWidget {
   const GalleryPage({Key? key}) : super(key: key);
@@ -48,5 +49,8 @@ class _GalleryPageState extends State<GalleryPage> {
         ));
   }
 
-  void _selectImage() {}
+  void _selectImage() {
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => const AddPhotoPage()));
+  }
 }
