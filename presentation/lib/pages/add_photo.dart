@@ -1,4 +1,7 @@
+import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class AddPhotoPage extends StatefulWidget {
   const AddPhotoPage({Key? key}) : super(key: key);
@@ -10,9 +13,12 @@ class AddPhotoPage extends StatefulWidget {
 class _AddPhotoState extends State<AddPhotoPage> {
   TextEditingController descriptionController = TextEditingController();
 
+  final List<XFile> _photos = [];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text("Select Image"),
       ),
@@ -23,7 +29,7 @@ class _AddPhotoState extends State<AddPhotoPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ..._buildPhotoInfo(),
-              SizedBox(height: 200, child: _buildPhotoList()),
+              SizedBox(height: 150, child: _buildPhotoList()),
             ]),
       ),
     );
@@ -42,7 +48,9 @@ class _AddPhotoState extends State<AddPhotoPage> {
       padding: const EdgeInsets.only(bottom: 16.0),
       child: IconButton(
         icon: const Icon(Icons.add_a_photo_rounded),
-        onPressed: () {},
+        onPressed: () {
+          _showGalleryOrCameraBottomSheet(context);
+        },
       ),
     );
   }
@@ -52,7 +60,7 @@ class _AddPhotoState extends State<AddPhotoPage> {
       controller: descriptionController,
       validator: (value) {
         if (value == null || value.isEmpty) {
-          return 'Please enter some text';
+          return 'Description is empty';
         }
         return null;
       },
@@ -78,12 +86,75 @@ class _AddPhotoState extends State<AddPhotoPage> {
     return ListView.builder(
       shrinkWrap: true,
       scrollDirection: Axis.horizontal,
-      itemCount: 100,
+      itemCount: _photos.length,
       itemBuilder: (BuildContext context, int index) {
-        return const Card(
-          child: SizedBox(child: Text("20"), height: 200.0),
-        );
+        return _buildPhotoItem(index);
       },
     );
+  }
+
+  Widget _buildPhotoItem(int index) {
+    if (kIsWeb) {
+      return Card(
+          child: Image.network(
+        _photos[index].path,
+        width: 100,
+        height: 100,
+        fit: BoxFit.fitHeight,
+      ));
+    } else {
+      return Card(
+          child: Image.file(
+        File(_photos[index].path),
+        width: 100,
+        height: 100,
+        fit: BoxFit.fitHeight,
+      ));
+    }
+  }
+
+  _selectImage(ImageSource imageSource) async {
+    XFile? image =
+        await ImagePicker().pickImage(source: imageSource, imageQuality: 50);
+
+    if (image != null) {
+      setState(() {
+        _photos.add(image);
+      });
+    }
+  }
+
+  void _showGalleryOrCameraBottomSheet(context) {
+    showModalBottomSheet(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        context: context,
+        builder: (BuildContext buildCondext) {
+          final items = <Widget>[
+            ListTile(
+                leading: const Icon(Icons.photo_library),
+                title: const Text('Photo Library'),
+                onTap: () {
+                  _selectImage(ImageSource.gallery);
+                  Navigator.of(buildCondext).pop();
+                })
+          ];
+          if (!kIsWeb) {
+            items.add(
+              ListTile(
+                leading: const Icon(Icons.photo_camera),
+                title: const Text('Camera'),
+                onTap: () {
+                  _selectImage(ImageSource.camera);
+                  Navigator.of(buildCondext).pop();
+                },
+              ),
+            );
+          }
+          return SafeArea(
+            child: Wrap(children: items),
+          );
+        });
   }
 }
