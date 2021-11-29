@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1006581913822",
+    "project_id": "flutterphotomap-c049a",
+    "storage_bucket": "flutterphotomap-c049a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1006581913822:android:188df598a4ab73dcfdca4f",
+        "android_client_info": {
+          "package_name": "ihar.paliashchuk.photo_map.android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1006581913822-opblv6vf48k7jlkp821brqmci04d7pj0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCqSgqvzCSn7IH77Ni9PczVgwDpdCxaaYY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1006581913822-opblv6vf48k7jlkp821brqmci04d7pj0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
