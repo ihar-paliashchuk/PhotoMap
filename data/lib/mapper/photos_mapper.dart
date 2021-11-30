@@ -1,4 +1,4 @@
-import 'package:data/dto/photos_dto.dart';
+import 'package:data/model/photos_dto.dart';
 import 'package:domain/entity/photos.dart';
 
 class PhotosMapper {

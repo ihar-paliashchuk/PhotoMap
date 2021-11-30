@@ -8,3 +8,6 @@ class Failure extends Equatable {
 }
 
 class PhotosFailure extends Failure {}
+
+class UloadPhotosFailure extends Failure {}
+

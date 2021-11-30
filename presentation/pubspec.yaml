@@ -16,7 +16,7 @@ dependencies:
   google_maps_flutter_web: ^0.3.2
 
   image_picker: ^0.8.4+4
-  
+
   flutter_bloc: ^7.3.3
   equatable: ^2.0.3
 
@@ -26,7 +26,6 @@ dependencies:
 
   data:
     path: ../data
-
   domain:
     path: ../domain
 

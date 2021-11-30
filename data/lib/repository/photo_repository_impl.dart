@@ -1,9 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:data/datasource/photo_remote_data_source.dart';
-import 'package:data/dto/photos_dto.dart';
+import 'package:data/model/photos_dto.dart';
 import 'package:data/mapper/photos_mapper.dart';
 import 'package:domain/entity/photos.dart';
+import 'package:domain/entity/upload_photos_request.dart';
 import 'package:domain/failure.dart';
 import 'package:domain/repository/photo_repository.dart';
 
@@ -48,5 +49,15 @@ class PhotoRepositoryImpl implements PhotoRepository {
         .map((e) => PhotosDto.fromJson(e.data()))
         .map((e) => PhotosMapper.fromDto(e))
         .toList();
+  }
+
+  @override
+  Future<Either<Failure, void>> uploadPhotos(UploadPhotosRequest requestParams) async {
+    try {
+      final result = await photoDataSource.uploadPhotos(requestParams);
+      return Right(result);
+    } on UploadPhotosException {
+      return Left(UloadPhotosFailure());
+    }
   }
 }
