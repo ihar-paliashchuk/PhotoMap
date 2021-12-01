@@ -15,6 +15,18 @@ class GetPhotosEvent extends PhotoEvent {
   const GetPhotosEvent({required this.userId});
 }
 
+class GetPhotosByLocationEvent extends PhotoEvent {
+  final String userId;
+  final String latitude;
+  final String longitude;
+
+  const GetPhotosByLocationEvent({
+    required this.userId,
+    required this.latitude,
+    required this.longitude,
+  });
+}
+
 class UploadPhotosEvent extends PhotoEvent {
   final UploadPhotosRequest request;
 

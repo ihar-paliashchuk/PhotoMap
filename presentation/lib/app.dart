@@ -1,5 +1,6 @@
 library presentation;
 
+import 'package:domain/usecase/get_photos_with_params_usecase.dart';
 import 'package:domain/usecase/upload_photos_usecase.dart';
 import 'package:flutter/material.dart';
 import 'package:presentation/pages/home.dart';
@@ -23,6 +24,7 @@ class App extends StatelessWidget {
     return BlocProvider<PhotosBloc>(
       create: (_) => PhotosBloc(
         GetAllPhotosUseCase(repository),
+        GetPhotosWithParamsUseCase(repository),
         UploadPhotosUseCase(repository),
       )..add(const GetPhotosEvent(userId: "1234")),
       child: MaterialApp(

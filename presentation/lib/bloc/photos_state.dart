@@ -16,6 +16,9 @@ class PhotosSuccess extends PhotosState {
   final List<Photos> photos;
 
   const PhotosSuccess({required this.photos});
+
+  @override
+  List<Object> get props => [photos];
 }
 
 class UploadPhotosSuccess extends PhotosState {
