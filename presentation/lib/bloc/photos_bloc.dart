@@ -6,8 +6,12 @@ import 'photos_event.dart';
 
 class PhotosBloc extends Bloc<PhotoEvent, PhotosState> {
   final UseCase _getPhotosUseCase;
+  final UseCase _uploadPhotosUseCase;
 
-  PhotosBloc(this._getPhotosUseCase) : super(PhotosLoading());
+  PhotosBloc(
+    this._getPhotosUseCase,
+    this._uploadPhotosUseCase,
+  ) : super(PhotosLoading());
 
   @override
   Stream<PhotosState> mapEventToState(PhotoEvent event) async* {
@@ -23,6 +27,15 @@ class PhotosBloc extends Bloc<PhotoEvent, PhotosState> {
       });
     } else if (event is PhotoPressedEvent) {
       //todo
+    } else if (event is UploadPhotosEvent) {
+      yield PhotosUploding();
+      final data = await _uploadPhotosUseCase(event.request);
+
+      yield* data.fold((l) async* {
+        yield PhotosError();
+      }, (result) async* {
+        yield UploadPhotosSuccess();
+      });
     }
   }
 }

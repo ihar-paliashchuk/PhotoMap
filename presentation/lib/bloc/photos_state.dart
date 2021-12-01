@@ -10,10 +10,15 @@ abstract class PhotosState extends Equatable {
 
 class PhotosLoading extends PhotosState {}
 
+class PhotosUploding extends PhotosState {}
+
 class PhotosSuccess extends PhotosState {
   final List<Photos> photos;
 
   const PhotosSuccess({required this.photos});
+}
+
+class UploadPhotosSuccess extends PhotosState {
 }
 
 class PhotosError extends PhotosState {}
