@@ -251,4 +251,12 @@ class _AddPhotoState extends State<AddPhotoPage> {
     return InputDecoration(
         border: const OutlineInputBorder(), labelText: laberText);
   }
+
+  @override
+  void dispose() {
+    _descriptionController.dispose();
+    _latitudeController.dispose();
+    _longitudeController.dispose();
+    super.dispose();
+  }
 }
