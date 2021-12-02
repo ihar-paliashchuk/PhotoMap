@@ -10,8 +10,9 @@ import 'package:domain/repository/photo_repository.dart';
 
 class PhotoRepositoryImpl implements PhotoRepository {
   final PhotoDataSource photoDataSource;
+  final PhotosMapper photosMapper;
 
-  PhotoRepositoryImpl(this.photoDataSource);
+  PhotoRepositoryImpl(this.photoDataSource, this.photosMapper);
 
   @override
   Future<Either<Failure, List<Photos>>> getAllPhotos(String userId) async {
@@ -20,7 +21,7 @@ class PhotoRepositoryImpl implements PhotoRepository {
       final photosSnapshot =
           await userDocumentSnapshot.reference.collection('items').get();
 
-      return Right(mapPhotos(photosSnapshot.docs));
+      return Right(mapPhotos(photosSnapshot.docs, photosMapper));
     } on PhotosCollectionException {
       return Left(PhotosFailure());
     }
@@ -39,21 +40,25 @@ class PhotoRepositoryImpl implements PhotoRepository {
             value.data()['longitude'] == longitude;
       });
 
-      return Right(mapPhotos(result));
+      return Right(mapPhotos(result, photosMapper));
     } on PhotosCollectionException {
       return Left(PhotosFailure());
     }
   }
 
-  List<Photos> mapPhotos(Iterable<QueryDocumentSnapshot<Map<String, dynamic>>> photos) {
+  List<Photos> mapPhotos(
+    Iterable<QueryDocumentSnapshot<Map<String, dynamic>>> photos,
+    PhotosMapper mapper,
+  ) {
     return photos
-        .map((e) => PhotosDto.fromJson(e.data()))
-        .map((e) => PhotosMapper.fromDto(e))
+        .map((photosMap) => PhotosDto.fromJson(photosMap.data()))
+        .map((photosDto) => photosMapper.toPhotos(photosDto))
         .toList();
   }
 
   @override
-  Future<Either<Failure, void>> uploadPhotos(UploadPhotosRequest requestParams) async {
+  Future<Either<Failure, void>> uploadPhotos(
+      UploadPhotosRequest requestParams) async {
     try {
       final result = await photoDataSource.uploadPhotos(requestParams);
       return Right(result);

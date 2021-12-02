@@ -1,5 +1,6 @@
 library presentation;
 
+import 'package:data/mapper/photos_mapper.dart';
 import 'package:domain/usecase/get_photos_with_params_usecase.dart';
 import 'package:domain/usecase/upload_photos_usecase.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +21,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     final repository = PhotoRepositoryImpl(PhotoRemoteDataSource(
         firestore: FirebaseFirestore.instance,
-        storage: FirebaseStorage.instance));
+        storage: FirebaseStorage.instance), PhotosMapper());
     return BlocProvider<PhotosBloc>(
       create: (_) => PhotosBloc(
         GetAllPhotosUseCase(repository),
