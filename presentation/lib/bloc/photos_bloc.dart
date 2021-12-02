@@ -1,3 +1,4 @@
+import 'package:domain/entity/photos.dart';
 import 'package:domain/usecase/get_photos_usecase.dart';
 import 'package:domain/usecase/get_photos_with_params_usecase.dart';
 import 'package:domain/usecase/usecase.dart';
@@ -26,7 +27,11 @@ class PhotosBloc extends Bloc<PhotoEvent, PhotosState> {
       yield* data.fold((l) async* {
         yield PhotosError();
       }, (result) async* {
-        yield PhotosSuccess(photos: result);
+        if ((result as List<Photos>).isEmpty) {
+          yield PhotosEmpty();
+        } else {
+          yield PhotosSuccess(photos: result);
+        }
       });
     } else if (event is GetPhotosByLocationEvent) {
       yield PhotosLoading();
@@ -40,8 +45,6 @@ class PhotosBloc extends Bloc<PhotoEvent, PhotosState> {
       }, (result) async* {
         yield PhotosSuccess(photos: result);
       });
-    } else if (event is PhotoPressedEvent) {
-      //todo
     } else if (event is UploadPhotosEvent) {
       yield PhotosUploding();
       final data = await _uploadPhotosUseCase(event.request);

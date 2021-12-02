@@ -21,13 +21,8 @@ class PhotosSuccess extends PhotosState {
   List<Object> get props => [photos];
 }
 
-class UploadPhotosSuccess extends PhotosState {
-}
+class UploadPhotosSuccess extends PhotosState {}
+
+class PhotosEmpty extends PhotosState {}
 
 class PhotosError extends PhotosState {}
-
-class PhotoPressedState extends PhotosState {
-  final Photos photos;
-
-  const PhotoPressedState({required this.photos});
-}

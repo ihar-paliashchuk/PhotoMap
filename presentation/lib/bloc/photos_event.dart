@@ -1,4 +1,3 @@
-import 'package:domain/entity/photos.dart';
 import 'package:domain/entity/upload_photos_request.dart';
 import 'package:equatable/equatable.dart';
 
@@ -33,8 +32,3 @@ class UploadPhotosEvent extends PhotoEvent {
   const UploadPhotosEvent({required this.request});
 }
 
-class PhotoPressedEvent extends PhotoEvent {
-  final Photos photos;
-
-  const PhotoPressedEvent({required this.photos});
-}

@@ -23,6 +23,9 @@ class _GalleryPageState extends State<GalleryPage> {
       if (state is PhotosLoading) {
         return const Center(child: CircularProgressIndicator());
       }
+      if (state is PhotosEmpty) {
+        return const Center(child: Text("Gallery is still empty"));
+      }
       if (state is PhotosError) {
         return const Center(child: Text("Error"));
       }
