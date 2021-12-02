@@ -72,21 +72,27 @@ class _GalleryPageState extends State<GalleryPage> {
     required String photoUrl,
     required String description,
   }) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return PhotoDetailsPage(photoUrl: photoUrl, description: description);
-        }));
-      },
-      child: Card(
-        child: Image.network(
-          photoUrl,
-          width: 100,
-          height: 100,
-          fit: BoxFit.cover,
+    return Material(
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(17.0)),
         ),
-      ),
-    );
+        clipBehavior: Clip.hardEdge,
+        child: Card(
+          child: Ink.image(
+            image: NetworkImage(photoUrl),
+            fit: BoxFit.cover,
+            width: 120.0,
+            height: 120.0,
+            child: InkWell(
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return PhotoDetailsPage(
+                      photoUrl: photoUrl, description: description);
+                }));
+              },
+            ),
+          ),
+        ));
   }
 
   void _selectImage() {
