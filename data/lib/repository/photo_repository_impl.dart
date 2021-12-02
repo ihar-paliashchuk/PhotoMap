@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:core/config/config.dart';
 import 'package:dartz/dartz.dart';
 import 'package:data/datasource/photo_remote_data_source.dart';
 import 'package:data/model/photos_dto.dart';
@@ -19,7 +20,7 @@ class PhotoRepositoryImpl implements PhotoRepository {
     try {
       final userDocumentSnapshot = await photoDataSource.getAllPhotos(userId);
       final photosSnapshot =
-          await userDocumentSnapshot.reference.collection('items').get();
+          await userDocumentSnapshot.reference.collection(userPhotos).get();
 
       return Right(mapPhotos(photosSnapshot.docs, photosMapper));
     } on PhotosCollectionException {
@@ -33,7 +34,7 @@ class PhotoRepositoryImpl implements PhotoRepository {
     try {
       final userDocumentSnapshot = await photoDataSource.getAllPhotos(userId);
       final photosSnapshot =
-          await userDocumentSnapshot.reference.collection('items').get();
+          await userDocumentSnapshot.reference.collection(userPhotos).get();
 
       final result = photosSnapshot.docs.where((value) {
         return value.data()['latitude'] == latitude &&

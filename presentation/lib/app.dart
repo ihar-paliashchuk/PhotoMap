@@ -1,5 +1,6 @@
 library presentation;
 
+import 'package:core/config/config.dart';
 import 'package:data/mapper/photos_mapper.dart';
 import 'package:domain/usecase/get_photos_with_params_usecase.dart';
 import 'package:domain/usecase/upload_photos_usecase.dart';
@@ -27,13 +28,13 @@ class App extends StatelessWidget {
         GetAllPhotosUseCase(repository),
         GetPhotosWithParamsUseCase(repository),
         UploadPhotosUseCase(repository),
-      )..add(const GetPhotosEvent(userId: "1234")),
+      )..add(const GetPhotosEvent(userId: userId)),
       child: MaterialApp(
-        title: 'Photo Map',
+        title: appName,
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: const HomePage(title: 'Flutter Demo Home Page'),
+        home: const HomePage(title: appName),
       ),
     );
   }

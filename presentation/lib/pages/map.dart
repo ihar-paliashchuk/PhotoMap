@@ -1,3 +1,4 @@
+import 'package:core/config/config.dart';
 import 'package:domain/entity/photos.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
@@ -82,7 +83,7 @@ class _MapPageState extends State<MapPage> {
 
   void _openPhotos(Photos spotos) {
     BlocProvider.of<PhotosBloc>(context).add(GetPhotosByLocationEvent(
-        userId: "1234",
+        userId: userId,
         latitude: spotos.latitude,
         longitude: spotos.longitude));
     DefaultTabController.of(context)?.animateTo(0);

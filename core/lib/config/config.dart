@@ -7,3 +7,7 @@ const String userPhotos = 'user_photos';
 // Firebase Storage
 
 const String photoPholder = 'images/image-';
+
+// app
+
+const String appName = 'Photo Map';

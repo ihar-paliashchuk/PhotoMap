@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:core/config/config.dart';
 import 'package:domain/entity/upload_photos_request.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -50,7 +51,7 @@ class _AddPhotoState extends State<AddPhotoPage> {
         stateWidget = const Center(child: Text("Error"));
       } else if (state is UploadPhotosSuccess) {
         BlocProvider.of<PhotosBloc>(context)
-            .add(const GetPhotosEvent(userId: '1234'));
+            .add(const GetPhotosEvent(userId: userId));
         SchedulerBinding.instance?.addPostFrameCallback((_) {
           Navigator.of(context).pop();
         });

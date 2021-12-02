@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:core/config/config.dart';
 import 'package:domain/entity/upload_photos_request.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
@@ -17,7 +18,7 @@ class PhotoRemoteDataSource implements PhotoDataSource {
   @override
   Future<DocumentSnapshot> getAllPhotos(String userId) {
     try {
-      return firestore.collection('photosData').doc(userId).get();
+      return firestore.collection(rootCollection).doc(userId).get();
     } on Exception {
       throw PhotosCollectionException();
     }
@@ -30,7 +31,7 @@ class PhotoRemoteDataSource implements PhotoDataSource {
 
       for (var photoFile in request.photos) {
         final reference =
-            storage.ref().child("images/image-${UniqueKey().toString()}");
+            storage.ref().child(photoPholder + UniqueKey().toString());
         final uploadTask = await reference.putFile(photoFile);
         final downloadUrl = await uploadTask.ref.getDownloadURL();
         urls.add(downloadUrl);
@@ -39,9 +40,9 @@ class PhotoRemoteDataSource implements PhotoDataSource {
       request.photosUrls = urls;
 
       final documentReferencer = firestore
-          .collection("photosData")
-          .doc('1234')
-          .collection('items')
+          .collection(rootCollection)
+          .doc(userId)
+          .collection(userPhotos)
           .doc();
 
       return await documentReferencer.set(request.toJson());
