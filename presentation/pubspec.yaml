@@ -12,17 +12,17 @@ dependencies:
   flutter:
     sdk: flutter
 
+  cloud_firestore: ^3.0.0
+  firebase_storage: ^10.1.0
+  firebase_analytics: ^8.3.4
+
   google_maps_flutter: ^2.1.1
   google_maps_flutter_web: ^0.3.2
 
-  image_picker: ^0.8.4+4
-
   flutter_bloc: ^7.3.3
-  equatable: ^2.0.3
 
-  firebase_analytics: ^8.3.4
-  cloud_firestore: ^3.0.0
-  firebase_storage: ^10.1.0
+  image_picker: ^0.8.4+4
+  equatable: ^2.0.3
 
   data:
     path: ../data
