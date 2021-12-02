@@ -13,7 +13,7 @@ class PhotoRemoteDataSource implements PhotoDataSource {
   final FirebaseFirestore firestore;
   final FirebaseStorage storage;
 
-  PhotoRemoteDataSource({required this.firestore, required this.storage});
+  PhotoRemoteDataSource(this.firestore, this.storage);
 
   @override
   Future<DocumentSnapshot> getAllPhotos(String userId) {

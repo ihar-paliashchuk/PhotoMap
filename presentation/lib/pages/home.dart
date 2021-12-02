@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:presentation/pages/gallery/gallery.dart';
+import 'package:presentation/pages/gallery.dart';
 import 'package:presentation/pages/map.dart';
 
 class HomePage extends StatefulWidget {
