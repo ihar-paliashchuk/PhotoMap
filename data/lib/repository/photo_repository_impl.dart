@@ -34,9 +34,10 @@ class PhotoRepositoryImpl implements PhotoRepository {
       final photosSnapshot =
           await userDocumentSnapshot.reference.collection('items').get();
 
-      final result = photosSnapshot.docs.takeWhile((value) =>
-          value.data()['latitude'] == latitude &&
-          value.data()['longitude'] == longitude);
+      final result = photosSnapshot.docs.where((value) {
+        return value.data()['latitude'] == latitude &&
+            value.data()['longitude'] == longitude;
+      });
 
       return Right(mapPhotos(result));
     } on PhotosCollectionException {

@@ -1,9 +1,11 @@
+import 'package:domain/entity/photos.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:presentation/bloc/photos_bloc.dart';
+import 'package:presentation/bloc/photos_event.dart';
 import 'package:presentation/bloc/photos_state.dart';
 
 class MapPage extends StatefulWidget {
@@ -16,65 +18,74 @@ class MapPage extends StatefulWidget {
 class _MapPageState extends State<MapPage> {
   late GoogleMapController _mapController;
 
-  Map<MarkerId, Marker> _markers = <MarkerId, Marker>{};
-
   @override
   Widget build(BuildContext context) {
-    return _buildBody();
+    return _buildWiget();
   }
 
-  Widget _buildBody() {
+  Widget _buildWiget() {
     return FutureBuilder<BitmapDescriptor>(
         future: createCustomMapPin(),
-        builder:
-            (BuildContext context, AsyncSnapshot<BitmapDescriptor> snapshot) {
+        builder: (
+          BuildContext context,
+          AsyncSnapshot<BitmapDescriptor> snapshot,
+        ) {
           return BlocBuilder<PhotosBloc, PhotosState>(
               builder: (context, state) {
-            Widget stateWidget = const Spacer();
-            if (state is PhotosLoading) {
-              stateWidget = const Center(child: CircularProgressIndicator());
-            } else if (state is PhotosError) {
-              stateWidget = const Center(child: Text("Error"));
-            } else if (state is PhotosSuccess) {
-              _markers = Map.fromEntries(state.photos.map((photo) => MapEntry(
-                  MarkerId(photo.id),
-                  Marker(
-                    markerId: MarkerId(photo.id),
-                    position: LatLng(double.parse(photo.latitude),
-                        double.parse(photo.longitude)),
-                    icon: snapshot.data ?? BitmapDescriptor.defaultMarker,
-                    infoWindow: InfoWindow(
-                        title: photo.description,
-                        snippet: "see more",
-                        onTap: () {
-                        }),
-                  ))));
+            if (state is PhotosSuccess) {
               return Scaffold(
-                body: 
-                // Stack(children: [
-                  GoogleMap(
-                    onMapCreated: _onMapCreated,
-                    initialCameraPosition: const CameraPosition(
-                      target: LatLng(53.893009, 27.567444),
-                      zoom: 5.0,
-                    ),
-                    markers: Set<Marker>.of(_markers.values),
-                    gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{
-                      Factory<OneSequenceGestureRecognizer>(
-                          () => EagerGestureRecognizer()),
-                    },
+                body: GoogleMap(
+                  onMapCreated: _onMapCreated,
+                  initialCameraPosition: const CameraPosition(
+                    target: LatLng(53.893009, 27.567444),
+                    zoom: 5.0,
                   ),
-                  // stateWidget,
-                // ]),
+                  markers: mapMarkers(
+                    state.photos,
+                    snapshot.data ?? BitmapDescriptor.defaultMarker,
+                  ),
+                  gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{
+                    Factory<OneSequenceGestureRecognizer>(
+                        () => EagerGestureRecognizer()),
+                  },
+                ),
               );
             }
-            return stateWidget;
+            return const Spacer();
           });
         });
   }
 
   void _onMapCreated(GoogleMapController controller) {
     _mapController = controller;
+  }
+
+  Set<Marker> mapMarkers(
+    List<Photos> photos,
+    BitmapDescriptor bitmapDescriptor,
+  ) {
+    return photos.map((photo) {
+      return Marker(
+        markerId: MarkerId(photo.id),
+        position: LatLng(
+          double.parse(photo.latitude),
+          double.parse(photo.longitude),
+        ),
+        icon: bitmapDescriptor,
+        infoWindow: InfoWindow(
+            title: photo.description,
+            snippet: "see more",
+            onTap: () => _openPhotos(photo)),
+      );
+    }).toSet();
+  }
+
+  void _openPhotos(Photos spotos) {
+    BlocProvider.of<PhotosBloc>(context).add(GetPhotosByLocationEvent(
+        userId: "1234",
+        latitude: spotos.latitude,
+        longitude: spotos.longitude));
+    DefaultTabController.of(context)?.animateTo(0);
   }
 
   Future<BitmapDescriptor> createCustomMapPin() async {
