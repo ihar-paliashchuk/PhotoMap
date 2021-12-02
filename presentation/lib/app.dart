@@ -9,11 +9,13 @@ import 'package:presentation/bloc/photos_bloc.dart';
 import 'package:presentation/bloc/photos_event.dart';
 
 class App extends StatelessWidget {
-  const App({Key? key}) : super(key: key);
+
+  final usecases = AppModule.create();
+  
+  App({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final usecases = AppModule.create();
     return BlocProvider<PhotosBloc>(
       create: (_) => PhotosBloc(usecases[0], usecases[1], usecases[2])
         ..add(const GetPhotosEvent(userId: userId)),

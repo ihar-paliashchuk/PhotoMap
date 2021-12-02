@@ -24,6 +24,9 @@ class GetPhotosByLocationEvent extends PhotoEvent {
     required this.latitude,
     required this.longitude,
   });
+
+  @override
+  List<Object> get props => [userId, latitude, longitude];
 }
 
 class UploadPhotosEvent extends PhotoEvent {
