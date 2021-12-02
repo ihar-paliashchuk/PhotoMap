@@ -20,14 +20,15 @@ class _GalleryPageState extends State<GalleryPage> {
 
   Widget _buildState() {
     return BlocBuilder<PhotosBloc, PhotosState>(builder: (context, state) {
+      var stateWidgets = <Widget>[];
       if (state is PhotosLoading) {
-        return const Center(child: CircularProgressIndicator());
+        stateWidgets.add(const Center(child: CircularProgressIndicator()));
       }
       if (state is PhotosEmpty) {
-        return const Center(child: Text("Gallery is still empty"));
+        stateWidgets.add(const Center(child: Text("Gallery is still empty")));
       }
       if (state is PhotosError) {
-        return const Center(child: Text("Error"));
+        stateWidgets.add(const Center(child: Text("Error")));
       }
       if (state is PhotosSuccess) {
         return _buildPhotoList(state.photos
@@ -37,7 +38,7 @@ class _GalleryPageState extends State<GalleryPage> {
             .expand((photo) => photo)
             .toList());
       }
-      return _buildPhotoList(List.empty());
+      return Stack(children: stateWidgets..add(_buildFabButton()));
     });
   }
 
