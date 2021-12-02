@@ -8,6 +8,6 @@ class PhotosMapper {
         description: photos.description,
         latitude: photos.latitude,
         longitude: photos.longitude,
-        photos: photos.photos);
+        urls: photos.urls);
   }
 }

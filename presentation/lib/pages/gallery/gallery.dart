@@ -31,7 +31,7 @@ class _GalleryPageState extends State<GalleryPage> {
       }
       if (state is PhotosSuccess) {
         return _buildPhotoList(state.photos
-            .map((photos) => photos.photos.map((photoUrl) {
+            .map((photos) => photos.urls.map((photoUrl) {
                   return [photoUrl, photos.description];
                 }))
             .expand((photo) => photo)

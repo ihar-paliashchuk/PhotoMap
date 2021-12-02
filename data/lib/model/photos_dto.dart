@@ -6,13 +6,13 @@ class PhotosDto extends Photos {
     required String description,
     required String latitude,
     required String longitude,
-    required List<String> photos,
+    required List<String> urls,
   }) : super(
             id: id,
             description: description,
             latitude: latitude,
             longitude: longitude,
-            photos: photos);
+            urls: urls);
 
   factory PhotosDto.fromJson(Map<String, dynamic> json) {
     return PhotosDto(
@@ -20,7 +20,7 @@ class PhotosDto extends Photos {
       description: json['description'],
       latitude: json['latitude'],
       longitude: json['longitude'],
-      photos: List<String>.from(json['photoUrls']),
+      urls: List<String>.from(json['photoUrls']),
     );
   }
 }
