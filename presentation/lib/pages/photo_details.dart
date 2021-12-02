@@ -19,12 +19,16 @@ class PhotoDetailsPage extends StatelessWidget {
   Widget _buildBody() {
     return Stack(
       children: [
-        Image.network(
-          photoUrl,
-          height: double.infinity,
-          width: double.infinity,
-          alignment: Alignment.center,
-          fit: BoxFit.cover,
+        InteractiveViewer(
+          minScale: 0.1,
+          maxScale: 3.5,
+          child: Image.network(
+            photoUrl,
+            height: double.infinity,
+            width: double.infinity,
+            alignment: Alignment.center,
+            fit: BoxFit.cover,
+          ),
         ),
         Align(
           alignment: FractionalOffset.bottomCenter,
