@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:presentation/bloc/photos_bloc.dart';
 import 'package:presentation/bloc/photos_state.dart';
 import 'package:presentation/pages/add_photo.dart';
+import 'package:presentation/pages/photo_details.dart';
 
 class GalleryPage extends StatefulWidget {
   const GalleryPage({Key? key}) : super(key: key);
@@ -27,21 +28,24 @@ class _GalleryPageState extends State<GalleryPage> {
       }
       if (state is PhotosSuccess) {
         return _buildPhotoList(state.photos
-            .map((e) => e.photos)
-            .expand((element) => element)
+            .map((photos) => photos.photos.map((photoUrl) {
+                  return [photoUrl, photos.description];
+                }))
+            .expand((photo) => photo)
             .toList());
       }
       return _buildPhotoList(List.empty());
     });
   }
 
-  Widget _buildPhotoList(List<String> photos) {
+  Widget _buildPhotoList(List<List<String>> photos) {
     return Stack(children: [
       Padding(
         padding: const EdgeInsets.all(8.0),
         child: GridView.builder(
           itemCount: photos.length,
-          itemBuilder: (context, index) => _buildPhotoItem(photos[index]),
+          itemBuilder: (context, index) => _buildPhotoItem(
+              photoUrl: photos[index][0], description: photos[index][1]),
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
           ),
@@ -64,13 +68,23 @@ class _GalleryPageState extends State<GalleryPage> {
         ));
   }
 
-  Widget _buildPhotoItem(String photoUrl) {
-    return Card(
-      child: Image.network(
-        photoUrl,
-        width: 100,
-        height: 100,
-        fit: BoxFit.fitHeight,
+  Widget _buildPhotoItem({
+    required String photoUrl,
+    required String description,
+  }) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return PhotoDetailsPage(photoUrl: photoUrl, description: description);
+        }));
+      },
+      child: Card(
+        child: Image.network(
+          photoUrl,
+          width: 100,
+          height: 100,
+          fit: BoxFit.cover,
+        ),
       ),
     );
   }
